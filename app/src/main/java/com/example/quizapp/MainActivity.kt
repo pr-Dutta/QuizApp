@@ -8,12 +8,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -97,7 +100,7 @@ fun QuizCard(modifier: Modifier = Modifier) {
                 },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(16.dp)
+                    .padding(bottom = 48.dp)
                     .align(Alignment.End)                // new
             ) {
                 Text(
@@ -113,7 +116,7 @@ fun QuizCard(modifier: Modifier = Modifier) {
 fun Questions(modifier: Modifier = Modifier, quiz: Quiz) {
 
     Column(modifier = Modifier
-        .padding(16.dp)
+        .padding(18.dp)
     ) {
 
         Text("Your Quiz", fontSize = 40.sp,
@@ -128,50 +131,54 @@ fun Questions(modifier: Modifier = Modifier, quiz: Quiz) {
             fontSize = 25.sp,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(15.dp)
+                .padding(top = 32.dp),
+            textAlign = TextAlign.Center
         )
 
 
-        // - (25-01-2024)
-        var radioState by remember { mutableStateOf(false) }
+        // - (29-01-2024)
+        val options = listOf(
+            "${quiz.optionOne}",
+            "${quiz.optionTwo}",
+            "${quiz.optionThree}",
+            "${quiz.optionFour}"
+        )
+        var radioState by remember { mutableStateOf(quiz.optionOne) }
 
-        RadioButton(selected = radioState, onClick = {
-            /* If it's true then it will be set to false,
-            * If false it will be set true */
-            radioState = !radioState
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(32.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                options.forEach {
+                    ColumnEachOption(selected = radioState == it,
+                        title = it) { data ->
+                        radioState = data
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ColumnEachOption(
+    selected: Boolean,
+    title: String,
+    onValueChange: (String) -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(selected = selected, onClick = {
+            onValueChange(title)
         })
-
-        Text(
-            quiz.optionTwo,
-            fontSize = 25.sp,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(5.dp)
-        )
-
-        Text(
-            quiz.optionThree,
-            fontSize = 25.sp,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(5.dp)
-        )
-
-        Text(
-            quiz.optionFour,
-            fontSize = 25.sp,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(5.dp)
-        )
-
-        Text(
-            "Answer - " + (quiz.answer).toString(),
-            fontSize = 25.sp,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(20.dp)
-        )
+        Text(text = title)
     }
 }
 
