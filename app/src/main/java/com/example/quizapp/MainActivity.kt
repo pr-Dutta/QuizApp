@@ -113,7 +113,7 @@ fun QuizCard(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Questions(modifier: Modifier = Modifier, quiz: Quiz) {
+fun Questions(quiz: Quiz) {
 
     Column(modifier = Modifier
         .padding(18.dp)
@@ -145,35 +145,40 @@ fun Questions(modifier: Modifier = Modifier, quiz: Quiz) {
         )
         var radioState by remember { mutableStateOf(quiz.optionOne) }
 
+
+
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(32.dp),
-            contentAlignment = Alignment.Center
+                .padding(32.dp)
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.Start,              // new
             ) {
-                options.forEach {
-                    ColumnEachOption(selected = radioState == it,
+                options.forEach {                  // have to revise it
+                    RowEachOption(selected = radioState == it,
                         title = it) { data ->
                         radioState = data
                     }
                 }
             }
         }
+
+
+
+
+
     }
 }
 
 @Composable
-fun ColumnEachOption(
+fun RowEachOption(
     selected: Boolean,
     title: String,
     onValueChange: (String) -> Unit
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         RadioButton(selected = selected, onClick = {
             onValueChange(title)
