@@ -50,7 +50,7 @@ fun RadioButtonScreen() {
                 /* it -> the each element of the gender list */
                 RadioEachRow(
                     selected = genderState == it,
-                    title = it) { data ->
+                    title = it) { data ->      // Body of the lambda function
                     genderState = data
                 }
             }
@@ -64,12 +64,15 @@ fun RadioEachRow(
     selected: Boolean,
     title: String,
     /* This function will take String as argument and return Unit */
+
+    // declaration of the lambda function
     onValueChange: (String) -> Unit             // lambda function
 ) {
     Row(
         verticalAlignment =Alignment.CenterVertically
     ) {
         RadioButton(selected = selected, onClick = {
+            // Colling of the lambda function
             onValueChange(title)
         })
         Text(text = title)

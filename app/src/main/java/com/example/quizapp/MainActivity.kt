@@ -101,7 +101,7 @@ fun QuizCard(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 48.dp)
-                    .align(Alignment.End)                // new
+                    //.align(Alignment.End)                // new
             ) {
                 Text(
                     text = "Next",
@@ -141,11 +141,9 @@ fun Questions(quiz: Quiz) {
             "${quiz.optionOne}",
             "${quiz.optionTwo}",
             "${quiz.optionThree}",
-            "${quiz.optionFour}"
+            "${quiz.optionFour}",
         )
         var radioState by remember { mutableStateOf(quiz.optionOne) }
-
-
 
         Box(
             modifier = Modifier
@@ -156,7 +154,11 @@ fun Questions(quiz: Quiz) {
                 horizontalAlignment = Alignment.Start,              // new
             ) {
                 options.forEach {                  // have to revise it
-                    RowEachOption(selected = radioState == it,
+                    RowEachOption(
+                                                            // - (01-02-2024)
+                        it,
+                        quiz,
+                        selected = radioState == it,
                         title = it) { data ->
                         radioState = data
                     }
@@ -164,24 +166,39 @@ fun Questions(quiz: Quiz) {
             }
         }
 
-
-
-
-
     }
 }
 
 @Composable
 fun RowEachOption(
+                                                              // - (01-02-2024)
+    it: String,
+    quiz: Quiz,
     selected: Boolean,
     title: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
 ) {
+
+    // This will store the selected option - (01-02-2024)
+    var selectedOption by remember { mutableStateOf("") }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         RadioButton(selected = selected, onClick = {
             onValueChange(title)
+
+                                                             // (01-02-2024)
+            if (it == quiz.optionOne) {
+                selectedOption = "a"
+            }else if (it == quiz.optionTwo) {
+                selectedOption = "b"
+            }else if (it == quiz.optionThree) {
+                selectedOption = "c"
+            }else if (it == quiz.optionFour) {
+                selectedOption = "d"
+            }
+
         })
         Text(text = title)
     }
