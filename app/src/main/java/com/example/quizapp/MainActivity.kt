@@ -24,6 +24,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -96,7 +97,10 @@ fun QuizCard(modifier: Modifier = Modifier) {
                 onClick = {
                     if (indexOfQuizList < (quizList.size - 1)) {
                         indexOfQuizList++
+                    }else {
+
                     }
+
                 },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -181,6 +185,8 @@ fun RowEachOption(
 
     // This will store the selected option - (01-02-2024)
     var selectedOption by remember { mutableStateOf("") }
+    var correctAnswer = "${quiz.answer}"
+    var score by remember { mutableIntStateOf(0) }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -199,8 +205,27 @@ fun RowEachOption(
                 selectedOption = "d"
             }
 
+            // TO-DO - (02-02-2024)
+            if (selectedOption == correctAnswer) {
+                score++
+            }
+
+
         })
         Text(text = title)
+    }
+}
+
+// - (02-02-2024)
+@Composable
+fun Result(
+    score: Int
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Your score is $score" )
     }
 }
 
