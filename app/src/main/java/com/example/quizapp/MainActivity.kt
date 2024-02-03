@@ -23,6 +23,8 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -34,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -88,23 +91,28 @@ fun QuizCard(modifier: Modifier = Modifier) {
             ) {
 
             var indexOfQuizList by remember { mutableStateOf(0) }
-            Questions(quiz = quizList[indexOfQuizList])     // We have extra function for it
+
+
+            var score by remember { mutableIntStateOf(0) }
+            Questions(
+                quiz = quizList[indexOfQuizList]
+            )     // We have extra function for it
 
 
             Spacer(modifier = Modifier.weight(1f))          // new learning
+
+
 
             Button(
                 onClick = {
                     if (indexOfQuizList < (quizList.size - 1)) {
                         indexOfQuizList++
-                    }else {
-
                     }
 
                 },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 48.dp)
+                    .padding(bottom = 15.dp)
                     //.align(Alignment.End)                // new
             ) {
                 Text(
@@ -112,12 +120,16 @@ fun QuizCard(modifier: Modifier = Modifier) {
                     fontSize = 20.sp
                 )
             }
+            Result(score)
+
         }
     }
 }
 
 @Composable
-fun Questions(quiz: Quiz) {
+fun Questions(
+    quiz: Quiz
+) {
 
     Column(modifier = Modifier
         .padding(18.dp)
@@ -159,7 +171,7 @@ fun Questions(quiz: Quiz) {
             ) {
                 options.forEach {                  // have to revise it
                     RowEachOption(
-                                                            // - (01-02-2024)
+                                                        // - (01-02-2024)
                         it,
                         quiz,
                         selected = radioState == it,
@@ -175,7 +187,7 @@ fun Questions(quiz: Quiz) {
 
 @Composable
 fun RowEachOption(
-                                                              // - (01-02-2024)
+                                                           // - (01-02-2024)
     it: String,
     quiz: Quiz,
     selected: Boolean,
@@ -222,14 +234,25 @@ fun Result(
     score: Int
 ) {
     Column(
+        modifier = Modifier
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Your score is $score" )
+        Text("Your score is $score/10",
+            fontSize = 20.sp,
+            modifier = Modifier
+                .padding(20.dp),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    name = "My Quiz App"
+    )
 @Composable
 fun QuizUiPreview() {
     QuizAppTheme {
