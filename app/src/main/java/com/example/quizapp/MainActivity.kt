@@ -1,5 +1,6 @@
 package com.example.quizapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -23,11 +23,8 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -75,6 +72,7 @@ fun QuizUi(modifier: Modifier = Modifier) {
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun QuizCard(modifier: Modifier = Modifier) {
 
@@ -93,10 +91,15 @@ fun QuizCard(modifier: Modifier = Modifier) {
             var indexOfQuizList by remember { mutableStateOf(0) }
 
 
-            var score by remember { mutableIntStateOf(0) }
+            // - (04-02-2024)
+            var selectedOption by remember { mutableStateOf("") }
+            var score by remember { mutableStateOf(0) }
+
             Questions(
+                mutableStateOf(selectedOption),
+                mutableStateOf(score),
                 quiz = quizList[indexOfQuizList]
-            )     // We have extra function for it
+            )
 
 
             Spacer(modifier = Modifier.weight(1f))          // new learning
@@ -106,13 +109,19 @@ fun QuizCard(modifier: Modifier = Modifier) {
             Button(
                 onClick = {
                     if (indexOfQuizList < (quizList.size - 1)) {
+
+                        // TO - DO
+//                        if (quizList[indexOfQuizList].answer.toString() == selectedOption) {
+//                            score++
+//                        }
+
+                        println("Hi")
                         indexOfQuizList++
                     }
-
                 },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 15.dp)
+                    .padding(bottom = 10.dp)
                     //.align(Alignment.End)                // new
             ) {
                 Text(
@@ -120,7 +129,7 @@ fun QuizCard(modifier: Modifier = Modifier) {
                     fontSize = 20.sp
                 )
             }
-            Result(score)
+            Result(mutableStateOf(score))
 
         }
     }
@@ -128,6 +137,8 @@ fun QuizCard(modifier: Modifier = Modifier) {
 
 @Composable
 fun Questions(
+    selectedOption: MutableState<String>,
+    score: MutableState<Int>,
     quiz: Quiz
 ) {
 
@@ -171,7 +182,8 @@ fun Questions(
             ) {
                 options.forEach {                  // have to revise it
                     RowEachOption(
-                                                        // - (01-02-2024)
+                        selectedOption,
+                        score,                                // - (01-02-2024)
                         it,
                         quiz,
                         selected = radioState == it,
@@ -187,7 +199,8 @@ fun Questions(
 
 @Composable
 fun RowEachOption(
-                                                           // - (01-02-2024)
+    selectedOption: MutableState<String>,
+    score: MutableState<Int>,                                                       // - (01-02-2024)
     it: String,
     quiz: Quiz,
     selected: Boolean,
@@ -196,9 +209,9 @@ fun RowEachOption(
 ) {
 
     // This will store the selected option - (01-02-2024)
-    var selectedOption by remember { mutableStateOf("") }
+    //var selectedOption by remember { mutableStateOf("") }
     var correctAnswer = "${quiz.answer}"
-    var score by remember { mutableIntStateOf(0) }
+    //var score by remember { mutableIntStateOf(0) }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -208,20 +221,23 @@ fun RowEachOption(
 
                                                              // (01-02-2024)
             if (it == quiz.optionOne) {
-                selectedOption = "a"
+                selectedOption.value = "a"
+                println("${quiz.optionOne}")
             }else if (it == quiz.optionTwo) {
-                selectedOption = "b"
+                selectedOption.value = "b"
+                println("${quiz.optionOne}")
+            }else if (it == quiz.optionTwo) {
+                selectedOption.value = "c"
+                println("${quiz.optionOne}")
             }else if (it == quiz.optionThree) {
-                selectedOption = "c"
-            }else if (it == quiz.optionFour) {
-                selectedOption = "d"
+                selectedOption.value = "d"
+                println("${quiz.optionFour}")
             }
 
             // TO-DO - (02-02-2024)
-            if (selectedOption == correctAnswer) {
-                score++
+            if (selectedOption.value == correctAnswer) {
+                score.value++
             }
-
 
         })
         Text(text = title)
@@ -231,7 +247,7 @@ fun RowEachOption(
 // - (02-02-2024)
 @Composable
 fun Result(
-    score: Int
+    score: MutableState<Int>
 ) {
     Column(
         modifier = Modifier
@@ -239,10 +255,10 @@ fun Result(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Your score is $score/10",
+        Text("Your score is ${score.value}/10",
             fontSize = 20.sp,
             modifier = Modifier
-                .padding(20.dp),
+                .padding(bottom = 20.dp),
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
         )
