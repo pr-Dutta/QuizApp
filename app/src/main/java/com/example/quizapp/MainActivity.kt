@@ -115,7 +115,7 @@ fun QuizCard(modifier: Modifier = Modifier) {
 //                            score++
 //                        }
 
-                        println("Hi")
+                        println("Hi")       // will show on logcat
                         indexOfQuizList++
                     }
                 },
@@ -211,6 +211,7 @@ fun RowEachOption(
     // This will store the selected option - (01-02-2024)
     //var selectedOption by remember { mutableStateOf("") }
     var correctAnswer = "${quiz.answer}"
+    println("correct option -  $correctAnswer")
     //var score by remember { mutableIntStateOf(0) }
 
     Row(
@@ -225,19 +226,21 @@ fun RowEachOption(
                 println("${quiz.optionOne}")
             }else if (it == quiz.optionTwo) {
                 selectedOption.value = "b"
-                println("${quiz.optionOne}")
-            }else if (it == quiz.optionTwo) {
-                selectedOption.value = "c"
-                println("${quiz.optionOne}")
+                println("${quiz.optionTwo}")
             }else if (it == quiz.optionThree) {
+                selectedOption.value = "c"
+                println("${quiz.optionThree}")
+            }else if (it == quiz.optionFour) {
                 selectedOption.value = "d"
                 println("${quiz.optionFour}")
             }
 
+            println(score.value)
             // TO-DO - (02-02-2024)
             if (selectedOption.value == correctAnswer) {
                 score.value++
             }
+            println(score.value)
 
         })
         Text(text = title)
@@ -255,7 +258,7 @@ fun Result(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Your score is ${score.value}/10",
+        Text("Your score is ${score.value}/5",
             fontSize = 20.sp,
             modifier = Modifier
                 .padding(bottom = 20.dp),
