@@ -95,6 +95,8 @@ fun QuizCard(modifier: Modifier = Modifier) {
             var selectedOption by remember { mutableStateOf("") }
             var score by remember { mutableStateOf(0) }
 
+            println("Inside QuizCard - $score")
+
             Questions(
                 mutableStateOf(selectedOption),
                 mutableStateOf(score),
@@ -193,8 +195,8 @@ fun Questions(
                 }
             }
         }
-
     }
+    println("Inside Questions - ${score.value}")
 }
 
 @Composable
@@ -245,6 +247,7 @@ fun RowEachOption(
         })
         Text(text = title)
     }
+    println("Inside RowEachOption - ${score.value}")
 }
 
 // - (02-02-2024)
@@ -266,6 +269,7 @@ fun Result(
             fontWeight = FontWeight.Bold
         )
     }
+    println("Inside Result - ${score.value}")
 }
 
 @Preview(
@@ -278,3 +282,10 @@ fun QuizUiPreview() {
         QuizUi()
     }
 }
+
+/* TO-DO
+* First I have to make my app show the increased number - learn with a
+* simple app - started
+
+*  The score isn't displayed, But it wasn't displayed on the UI
+* And The score isn't staying while using mutableState of with remember */
