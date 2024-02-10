@@ -35,15 +35,13 @@ fun MyComposable() {
         var countState by remember { mutableStateOf(0) }
 
 
-        Button(mutableStateOf(countState))
-
-        Result1(mutableStateOf(countState))
+        ButtonAndResult(mutableStateOf(countState))
     }
 }
 
 
 @Composable
-fun Button(
+fun ButtonAndResult(
     score: MutableState<Int>
 ) {
     Column(
@@ -60,22 +58,6 @@ fun Button(
                 Text("Click Me")
         }
 
-    }
-}
-
-
-
-
-@Composable
-fun Result1(
-    score: MutableState<Int>
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
         Text("Your score is ${score.value}/5",
             fontSize = 20.sp,
             modifier = Modifier
@@ -84,7 +66,6 @@ fun Result1(
             fontWeight = FontWeight.Bold
         )
     }
-    println("Inside Result - ${score.value}")
 }
 
 @Preview(showBackground = true)
