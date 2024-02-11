@@ -196,6 +196,8 @@ fun Questions(
             }
         }
     }
+
+
     println("Inside Questions - ${score.value}")
 }
 
@@ -247,7 +249,9 @@ fun RowEachOption(
         })
         Text(text = title)
     }
-    println("Inside RowEachOption - ${score.value}")
+
+    println("Here we will know what is the " +
+            " value Inside RowEachOption - ${score.value}")
 }
 
 // - (02-02-2024)
