@@ -93,7 +93,10 @@ fun QuizCard(modifier: Modifier = Modifier) {
 
             // - (04-02-2024)
             var selectedOption by remember { mutableStateOf("") }
-            var score by remember { mutableStateOf(0) }
+            var score by remember { mutableStateOf(1) }
+
+            /* I need to modify the score mutable state
+            * within the same composable to reflect it - (12-02-2024) */
 
             println("Inside QuizCard - $score")
 
@@ -113,9 +116,9 @@ fun QuizCard(modifier: Modifier = Modifier) {
                     if (indexOfQuizList < (quizList.size - 1)) {
 
                         // TO - DO
-//                        if (quizList[indexOfQuizList].answer.toString() == selectedOption) {
-//                            score++
-//                        }
+                        if (quizList[indexOfQuizList].answer.toString() == selectedOption) {
+                            score++
+                        }
 
                         println("Hi")       // will show on logcat
                         indexOfQuizList++
@@ -196,11 +199,9 @@ fun Questions(
             }
         }
     }
-
-
-    println("Inside Questions - ${score.value}")
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun RowEachOption(
     selectedOption: MutableState<String>,
@@ -247,11 +248,14 @@ fun RowEachOption(
             println(score.value)
 
         })
+
         Text(text = title)
     }
 
-    println("Here we will know what is the " +
-            " value Inside RowEachOption - ${score.value}")
+    // Need to resolve this issue first                         - (13-02-2024)
+
+    // this will be visible in all the options
+    com.example.quizapp.Result(score = score)
 }
 
 // - (02-02-2024)
@@ -273,7 +277,6 @@ fun Result(
             fontWeight = FontWeight.Bold
         )
     }
-    println("Inside Result - ${score.value}")
 }
 
 @Preview(

@@ -35,7 +35,9 @@ fun MyComposable() {
         var countState by remember { mutableStateOf(0) }
 
 
+        /* This both composable takes a copy of countState with it - (12-02-2024) */
         ButtonAndResult(mutableStateOf(countState))
+        Experimental(mutableStateOf(countState))
     }
 }
 
@@ -57,6 +59,34 @@ fun ButtonAndResult(
             }) {
                 Text("Click Me")
         }
+
+        Text("Your score is ${score.value}/5",
+            fontSize = 20.sp,
+            modifier = Modifier
+                .padding(bottom = 20.dp),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+fun Experimental(
+    score: MutableState<Int>
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        androidx.compose.material3
+            .Button(onClick = {
+                score.value++
+            }) {
+                Text("Click Me")
+            }
 
         Text("Your score is ${score.value}/5",
             fontSize = 20.sp,
