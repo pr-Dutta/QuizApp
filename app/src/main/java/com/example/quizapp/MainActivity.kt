@@ -116,9 +116,9 @@ fun QuizCard(modifier: Modifier = Modifier) {
                     if (indexOfQuizList < (quizList.size - 1)) {
 
                         // TO - DO
-                        if (quizList[indexOfQuizList].answer.toString() == selectedOption) {
-                            score++
-                        }
+//                        if (quizList[indexOfQuizList].answer.toString() == selectedOption) {
+//                            score++
+//                        }
 
                         println("Hi")       // will show on logcat
                         indexOfQuizList++
@@ -177,24 +177,61 @@ fun Questions(
         )
         var radioState by remember { mutableStateOf(quiz.optionOne) }
 
+
+
+        
+        // - (13-02-2024) ---------------------------- From here
         Box(
             modifier = Modifier
                 .padding(32.dp)
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start,              // new
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                options.forEach {                  // have to revise it
-                    RowEachOption(
-                        selectedOption,
-                        score,                                // - (01-02-2024)
-                        it,
-                        quiz,
-                        selected = radioState == it,
-                        title = it) { data ->
-                        radioState = data
-                    }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    RadioButton(selected = true,
+                        onClick = {
+
+                        })
+                    Text(text = options[0])
+                }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    RadioButton(selected = true,
+                        onClick = {
+
+                        })
+                    Text(text = options[1])
+                }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    RadioButton(selected = true,
+                        onClick = {
+
+                        })
+                    Text(text = options[2])
+                }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    RadioButton(selected = true,
+                        onClick = {
+
+                        })
+                    Text(text = options[3])
                 }
             }
         }
@@ -216,7 +253,6 @@ fun RowEachOption(
     // This will store the selected option - (01-02-2024)
     //var selectedOption by remember { mutableStateOf("") }
     var correctAnswer = "${quiz.answer}"
-    println("correct option -  $correctAnswer")
     //var score by remember { mutableIntStateOf(0) }
 
     Row(
@@ -255,7 +291,7 @@ fun RowEachOption(
     // Need to resolve this issue first                         - (13-02-2024)
 
     // this will be visible in all the options
-    com.example.quizapp.Result(score = score)
+    Result(score = score)
 }
 
 // - (02-02-2024)
