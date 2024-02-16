@@ -94,17 +94,31 @@ fun QuizCard(modifier: Modifier = Modifier) {
             // Now I have to change the indexOfQuizList state
             // to change the quiz while clicking the next button
             var indexOfQuizList by remember { mutableStateOf(0) }
-
-
             var score by remember { mutableStateOf(1) }
+            var selectedOption by remember { mutableStateOf("") }
 
             /* I need to modify the score mutable state
             * within the same composable to reflect it - (12-02-2024) */
 
             QuestionsAndOptions(
-                mutableStateOf(score),
                 quiz = quizList[indexOfQuizList],
-                mutableStateOf(indexOfQuizList)
+                onSelectedOptionChange = { newSelectedOption ->   // (16-02-2024)
+                    selectedOption = newSelectedOption
+                },
+                selectedOption
+            )
+
+            ResultAndButton(
+                indexOfQuizList,
+                mutableStateOf(selectedOption),
+                score,
+                quiz = quizList[indexOfQuizList],
+                onIndexOfQuizListChange = { newIndex ->         // (16-02-2024)
+                    indexOfQuizList = newIndex
+                },
+                onScoreChange = {
+                    score = it                          // (16-02-2024)
+                }
             )
         }
     }
@@ -113,12 +127,10 @@ fun QuizCard(modifier: Modifier = Modifier) {
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun QuestionsAndOptions(
-    score: MutableState<Int>,
     quiz: Quiz,
-    indexOfQuizList: MutableState<Int>
+    onSelectedOptionChange: (String) -> Unit,           // (16-02-2024)
+    selectedOption: String                          // (16-02-2024)
 ) {
-
-    var selectedOption by remember { mutableStateOf("") }
 
     Column(modifier = Modifier
         .padding(18.dp)
@@ -148,7 +160,7 @@ fun QuestionsAndOptions(
             "${quiz.optionThree}",
             "${quiz.optionFour}",
         )
-        var radioState by remember { mutableStateOf(quiz.optionOne) }
+        //var radioState by remember { mutableStateOf(quiz.optionOne) }
 
 
 
@@ -171,9 +183,9 @@ fun QuestionsAndOptions(
                 ) {
                     RadioButton(selected = selectedOption == "a",
                         onClick = {
-                            selectedOption = "a"
+                            onSelectedOptionChange("a")         // (16-02-2024)
                         })
-                    Text(text = options[0])
+                    Text(text = "${quiz.optionOne}")
                 }
 
                 Row(
@@ -182,9 +194,9 @@ fun QuestionsAndOptions(
                 ) {
                     RadioButton(selected = selectedOption == "b",
                         onClick = {
-                            selectedOption = "b"
+                            onSelectedOptionChange("b")
                         })
-                    Text(text = options[1])
+                    Text(text = "${quiz.optionTwo}")
                 }
 
                 Row(
@@ -193,9 +205,9 @@ fun QuestionsAndOptions(
                 ) {
                     RadioButton(selected = selectedOption == "c",
                         onClick = {
-                            selectedOption = "c"
+                            onSelectedOptionChange("c")
                         })
-                    Text(text = options[2])
+                    Text(text = "${quiz.optionThree}")
                 }
 
                 Row(
@@ -204,30 +216,25 @@ fun QuestionsAndOptions(
                 ) {
                     RadioButton(selected = selectedOption == "d",
                         onClick = {
-                            selectedOption = "d"
+                            onSelectedOptionChange("d")          // (16-02-2024)
                         })
-                    Text(text = options[3])
+                    Text(text = "${quiz.optionFour}")
                 }
             }
         }
     }
-
-    ResultAndButton(
-        indexOfQuizList,
-        mutableStateOf(selectedOption),
-        score,
-        quiz = quizList[indexOfQuizList.value]
-    )
 }
 
 
 // - (02-02-2024)
 @Composable
 fun ResultAndButton(
-    indexOfQuizList: MutableState<Int>,
+    indexOfQuizList: Int,                           // (16-02-2024)
     selectedOption: MutableState<String>,
-    score: MutableState<Int>,
-    quiz: Quiz
+    score: Int,                                         // (16-02-2024)
+    quiz: Quiz,
+    onIndexOfQuizListChange: (Int) -> Unit,            // (16-02-2024)
+    onScoreChange: (Int) -> Unit                    // (16-02-2024)
 ) {
     Column(
         modifier = Modifier
@@ -240,13 +247,13 @@ fun ResultAndButton(
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            onClick = {
-                if (indexOfQuizList.value < (quizList.size - 1)) {
-                    indexOfQuizList.value++
+            onClick = {                                         // (16-02-2024)
+                if (indexOfQuizList < (quizList.size - 1)) {
+                    onIndexOfQuizListChange(indexOfQuizList+1)
                 }
-
+                                                                // (16-02-2024)
                 if (selectedOption.value == quiz.answer.toString()) {
-                    score.value++
+                    onScoreChange(score+1)
                 }
             },
             modifier = Modifier
@@ -260,7 +267,7 @@ fun ResultAndButton(
             )
         }
 
-        Text("Your score is ${score.value}/5",
+        Text("Your score is ${score}/5",
             fontSize = 20.sp,
             modifier = Modifier
                 .padding(bottom = 20.dp),
