@@ -88,10 +88,13 @@ fun QuizCard(modifier: Modifier = Modifier) {
             shape = RoundedCornerShape(30.dp)       // new
             ) {
 
+
+            // - (16-02-2024)
+
+            // Now I have to change the indexOfQuizList state
+            // to change the quiz while clicking the next button
             var indexOfQuizList by remember { mutableStateOf(0) }
 
-
-            // - (04-02-2024)
 
             var score by remember { mutableStateOf(1) }
 
@@ -107,12 +110,15 @@ fun QuizCard(modifier: Modifier = Modifier) {
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun QuestionsAndOptions(
     score: MutableState<Int>,
     quiz: Quiz,
     indexOfQuizList: MutableState<Int>
 ) {
+
+    var selectedOption by remember { mutableStateOf("") }
 
     Column(modifier = Modifier
         .padding(18.dp)
@@ -148,7 +154,7 @@ fun QuestionsAndOptions(
 
         
         // - (14-02-2024) ---------------------------- From here
-        var selectedOption by remember { mutableStateOf(false) }
+
 
         Box(
             modifier = Modifier
@@ -163,9 +169,9 @@ fun QuestionsAndOptions(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    RadioButton(selected = selectedOption,
+                    RadioButton(selected = selectedOption == "a",
                         onClick = {
-                            selectedOption = !selectedOption
+                            selectedOption = "a"
                         })
                     Text(text = options[0])
                 }
@@ -174,9 +180,9 @@ fun QuestionsAndOptions(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    RadioButton(selected = selectedOption,
+                    RadioButton(selected = selectedOption == "b",
                         onClick = {
-                            selectedOption = !selectedOption
+                            selectedOption = "b"
                         })
                     Text(text = options[1])
                 }
@@ -185,9 +191,9 @@ fun QuestionsAndOptions(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    RadioButton(selected = selectedOption,
+                    RadioButton(selected = selectedOption == "c",
                         onClick = {
-                            selectedOption = !selectedOption
+                            selectedOption = "c"
                         })
                     Text(text = options[2])
                 }
@@ -196,9 +202,9 @@ fun QuestionsAndOptions(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    RadioButton(selected = selectedOption,
+                    RadioButton(selected = selectedOption == "d",
                         onClick = {
-                            selectedOption = !selectedOption
+                            selectedOption = "d"
                         })
                     Text(text = options[3])
                 }
@@ -208,7 +214,9 @@ fun QuestionsAndOptions(
 
     ResultAndButton(
         indexOfQuizList,
-        score = score
+        mutableStateOf(selectedOption),
+        score,
+        quiz = quizList[indexOfQuizList.value]
     )
 }
 
@@ -217,7 +225,9 @@ fun QuestionsAndOptions(
 @Composable
 fun ResultAndButton(
     indexOfQuizList: MutableState<Int>,
-    score: MutableState<Int>
+    selectedOption: MutableState<String>,
+    score: MutableState<Int>,
+    quiz: Quiz
 ) {
     Column(
         modifier = Modifier
@@ -233,6 +243,10 @@ fun ResultAndButton(
             onClick = {
                 if (indexOfQuizList.value < (quizList.size - 1)) {
                     indexOfQuizList.value++
+                }
+
+                if (selectedOption.value == quiz.answer.toString()) {
+                    score.value++
                 }
             },
             modifier = Modifier
