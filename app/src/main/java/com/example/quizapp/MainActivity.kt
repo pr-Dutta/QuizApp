@@ -94,7 +94,7 @@ fun QuizCard(modifier: Modifier = Modifier) {
             // Now I have to change the indexOfQuizList state
             // to change the quiz while clicking the next button
             var indexOfQuizList by remember { mutableStateOf(0) }
-            var score by remember { mutableStateOf(1) }
+            var score by remember { mutableStateOf(0) }
             var selectedOption by remember { mutableStateOf("") }
 
             /* I need to modify the score mutable state
@@ -118,6 +118,9 @@ fun QuizCard(modifier: Modifier = Modifier) {
                 },
                 onScoreChange = {
                     score = it                          // (16-02-2024)
+                },
+                onSelectedOptionChange = {
+                    selectedOption = it
                 }
             )
         }
@@ -174,7 +177,7 @@ fun QuestionsAndOptions(
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.Start,
             ) {
 
                 Row(
@@ -234,7 +237,8 @@ fun ResultAndButton(
     score: Int,                                         // (16-02-2024)
     quiz: Quiz,
     onIndexOfQuizListChange: (Int) -> Unit,            // (16-02-2024)
-    onScoreChange: (Int) -> Unit                    // (16-02-2024)
+    onScoreChange: (Int) -> Unit,                    // (16-02-2024)
+    onSelectedOptionChange: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -248,13 +252,18 @@ fun ResultAndButton(
 
         Button(
             onClick = {                                         // (16-02-2024)
+
+                onSelectedOptionChange(" ")
+                
                 if (indexOfQuizList < (quizList.size - 1)) {
                     onIndexOfQuizListChange(indexOfQuizList+1)
+
+                    if (selectedOption.value == quiz.answer.toString()) {
+                        onScoreChange(score+1)
+                    }
                 }
-                                                                // (16-02-2024)
-                if (selectedOption.value == quiz.answer.toString()) {
-                    onScoreChange(score+1)
-                }
+
+
             },
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -294,3 +303,9 @@ fun QuizUiPreview() {
 
 *  The score isn't displayed, But it wasn't displayed on the UI
 * And The score isn't staying while using mutableState of with remember */
+
+/* While I press the next button after all of the quiz completed it
+* still increments the score - (17-02-2024) - Done */
+
+/* The selected state of radio button does not dis-appear
+ * when clicking the next button - (17-02-2024) */
