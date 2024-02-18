@@ -261,6 +261,10 @@ fun ResultAndButton(
                     if (selectedOption.value == quiz.answer.toString()) {
                         onScoreChange(score+1)
                     }
+                }else if (indexOfQuizList < quizList.size) {
+                    if (selectedOption.value == quiz.answer.toString()) {
+                        onScoreChange(score+1)
+                    }
                 }
 
 
@@ -308,4 +312,4 @@ fun QuizUiPreview() {
 * still increments the score - (17-02-2024) - Done */
 
 /* The selected state of radio button does not dis-appear
- * when clicking the next button - (17-02-2024) */
+ * when clicking the next button - (17-02-2024) - Done */
