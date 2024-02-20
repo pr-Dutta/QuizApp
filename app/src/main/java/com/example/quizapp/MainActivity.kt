@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -66,6 +67,7 @@ fun QuizUi(modifier: Modifier = Modifier) {
             painter = image,
             contentDescription = null,
             contentScale = ContentScale.Crop,       // new
+            modifier = Modifier.fillMaxSize()
         )
 
         QuizCard()
@@ -80,12 +82,13 @@ fun QuizCard(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,           // new
         horizontalAlignment = Alignment.CenterHorizontally  // new
     ) {
+        val customColorForCardBackground = Color(0xffa8dadc)
         Card(
             modifier  = Modifier
                 .size(width = 310.dp, height = 600.dp)     // new
-                .background(color = Color.Black)
+                .background(color = customColorForCardBackground)
                 .padding(8.dp),         // unexpected Improvement   new
-            shape = RoundedCornerShape(30.dp)       // new
+            shape = RoundedCornerShape(30.dp),       // new
             ) {
 
 
@@ -139,11 +142,16 @@ fun QuestionsAndOptions(
         .padding(18.dp)
     ) {
 
-        Text("Your Quiz", fontSize = 40.sp,
+        Text("Latest Quiz", fontSize = 32.sp,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 // have to learn how to add hash code color
-                .background(color = Color.LightGray)
+                .background(
+                    color = Color(0xffff8800),
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(8.dp),
+            fontWeight = FontWeight.Bold
         )
 
         Text(
@@ -281,9 +289,13 @@ fun ResultAndButton(
         }
 
         Text("Your score is ${score}/5",
-            fontSize = 20.sp,
+            fontSize = 24.sp,
             modifier = Modifier
-                .padding(bottom = 20.dp),
+                .padding(bottom = 20.dp)
+                .background(
+                    color = Color(0xffff8800),
+                    shape = RoundedCornerShape(8.dp)
+                ),
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
         )
@@ -301,15 +313,6 @@ fun QuizUiPreview() {
     }
 }
 
-/* TO-DO
-* First I have to make my app show the increased number - learn with a
-* simple app - started
-
-*  The score isn't displayed, But it wasn't displayed on the UI
-* And The score isn't staying while using mutableState of with remember */
-
-/* While I press the next button after all of the quiz completed it
-* still increments the score - (17-02-2024) - Done */
-
-/* The selected state of radio button does not dis-appear
- * when clicking the next button - (17-02-2024) - Done */
+/* One new improvement should be done ->
+* the score is increasing after the last question arrives,
+* which should not be happen because we submit it already - 20-02-2024 */
