@@ -272,6 +272,7 @@ fun ResultAndButton(
                 }else if (indexOfQuizList < quizList.size) {
                     if (selectedOption.value == quiz.answer.toString()) {
                         onScoreChange(score+1)
+                        selectedOption.value = " "          // new
                     }
                 }
 
