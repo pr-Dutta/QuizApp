@@ -36,6 +36,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -148,7 +151,11 @@ fun QuestionsAndOptions(
         .padding(18.dp)
     ) {
 
-        Text("Latest Quiz", fontSize = 32.sp,
+        Text(
+            "Latest Quiz", fontSize = 32.sp,
+            style = TextStyle(
+                fontFamily = FontFamily.Monospace
+            ),
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 // have to learn how to add hash code color
@@ -166,7 +173,11 @@ fun QuestionsAndOptions(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 32.dp),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            //fontStyle = FontStyle.Italic,
+            style = TextStyle(
+                fontFamily = FontFamily.Monospace
+            )
         )
 
 
@@ -202,7 +213,13 @@ fun QuestionsAndOptions(
                         onClick = {
                             onSelectedOptionChange("a")         // (16-02-2024)
                         })
-                    Text(text = "${quiz.optionOne}")
+                    Text(
+                        text = "${quiz.optionOne}",
+                        style = TextStyle(
+                            fontFamily = FontFamily.Monospace
+                        ),
+                        fontSize = 18.sp
+                    )
                 }
 
                 Row(
@@ -213,7 +230,13 @@ fun QuestionsAndOptions(
                         onClick = {
                             onSelectedOptionChange("b")
                         })
-                    Text(text = "${quiz.optionTwo}")
+                    Text(
+                        text = "${quiz.optionTwo}",
+                        style = TextStyle(
+                            fontFamily = FontFamily.Monospace
+                        ),
+                        fontSize = 18.sp
+                    )
                 }
 
                 Row(
@@ -224,7 +247,13 @@ fun QuestionsAndOptions(
                         onClick = {
                             onSelectedOptionChange("c")
                         })
-                    Text(text = "${quiz.optionThree}")
+                    Text(
+                        text = "${quiz.optionThree}",
+                        style = TextStyle(
+                            fontFamily = FontFamily.Monospace
+                        ),
+                        fontSize = 18.sp
+                    )
                 }
 
                 Row(
@@ -235,7 +264,13 @@ fun QuestionsAndOptions(
                         onClick = {
                             onSelectedOptionChange("d")          // (16-02-2024)
                         })
-                    Text(text = "${quiz.optionFour}")
+                    Text(
+                        text = "${quiz.optionFour}",
+                        style = TextStyle(
+                            fontFamily = FontFamily.Monospace
+                        ),
+                        fontSize = 18.sp
+                    )
                 }
             }
         }
@@ -291,11 +326,18 @@ fun ResultAndButton(
         ) {
             Text(
                 text = "Next",
+                style = TextStyle(
+                    fontFamily = FontFamily.Monospace
+                ),
                 fontSize = 20.sp
             )
         }
 
-        Text("Your score is ${score}/5",
+        Text(
+            "Your score is ${score}/5",
+            style = TextStyle(
+                fontFamily = FontFamily.Monospace
+            ),
             fontSize = 24.sp,
             modifier = Modifier
                 .padding(bottom = 20.dp)
