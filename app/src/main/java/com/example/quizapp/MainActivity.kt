@@ -112,13 +112,13 @@ fun QuizCard(modifier: Modifier = Modifier) {
             /* I need to modify the score mutable state
             * within the same composable to reflect it - (12-02-2024) */
 
-            QuestionsAndOptions(
-                quiz = quizList[indexOfQuizList],
-                onSelectedOptionChange = { newSelectedOption ->   // (16-02-2024)
-                    selectedOption = newSelectedOption
-                },
-                selectedOption
-            )
+//            QuestionsAndOptions(
+//                quiz = quizList[indexOfQuizList],
+//                onSelectedOptionChange = { newSelectedOption ->   // (16-02-2024)
+//                    selectedOption = newSelectedOption
+//                },
+//                selectedOption
+//            )
 
             ResultAndButton(
                 indexOfQuizList,
